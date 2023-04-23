@@ -21,7 +21,6 @@ public class LivroResource {
     LivroService service;
     @Autowired
     CategoriaService categoriaService;
-
     @Autowired
     VendedorService vendedorService;
 

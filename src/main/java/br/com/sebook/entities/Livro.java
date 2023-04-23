@@ -45,7 +45,6 @@ public class Livro implements Serializable {
         this.editora = editora;
         this.numeroDePaginas = numeroDePaginas;
         this.preco = preco;
-        this.imgUrl = imgUrl;
         this.idDaCategoria = idDaCategoria;
         this.idDoVendedor = idDoVendedor;
     }

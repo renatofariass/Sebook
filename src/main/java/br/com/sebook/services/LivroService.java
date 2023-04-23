@@ -24,6 +24,7 @@ public class LivroService {
     }
 
     public Livro insert(Livro livro) {
+
         return livroRepository.save(livro);
     }
 
@@ -31,17 +32,28 @@ public class LivroService {
         livroRepository.deleteById(id);
     }
 
-    public Livro update(Long id, Livro livro) {
-        Livro entity = livroRepository.getReferenceById(id);
-        updateData(entity, livro);
+    public Livro update(Long id, Livro obj) {
+        Livro livro = livroRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+        updateData(livro, obj);
         return livroRepository.save(livro);
     }
 
-    private void updateData(Livro entity, Livro livro) {
-        entity.setTitulo(livro.getTitulo());
-        entity.setAutor(livro.getAutor());
-        entity.setEditora(livro.getEditora());
-        entity.setNumeroDePaginas(livro.getNumeroDePaginas());
-        entity.setPreco(livro.getPreco());
+    private void updateData(Livro livro, Livro obj) {
+        if (obj.getTitulo() != null) {
+            livro.setTitulo(obj.getTitulo());
+        }
+        if (obj.getAutor() != null) {
+            livro.setAutor(obj.getAutor());
+        }
+        if (obj.getEditora() != null) {
+            livro.setEditora(obj.getEditora());
+        }
+        if (obj.getNumeroDePaginas() != null) {
+            livro.setNumeroDePaginas(obj.getNumeroDePaginas());
+        }
+        if (obj.getPreco() != null) {
+            livro.setPreco(obj.getPreco());
+        }
     }
 }

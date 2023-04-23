@@ -31,16 +31,25 @@ public class VendedorService {
         vendedorRepository.deleteById(id);
     }
 
-    public Vendedor update(Long id, Vendedor vendedor) {
-        Vendedor entity = vendedorRepository.getReferenceById(id);
-        updateData(entity, vendedor);
+    public Vendedor update(Long id, Vendedor obj) {
+        Vendedor vendedor = vendedorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(id));
+        updateData(vendedor, obj);
         return vendedorRepository.save(vendedor);
     }
 
-    private void updateData(Vendedor entity, Vendedor vendedor) {
-        entity.setNome(vendedor.getNome());
-        entity.setContato(vendedor.getContato());
-        entity.setEmail(vendedor.getEmail());
-        entity.setSenha(vendedor.getSenha());
+    private void updateData(Vendedor vendedor, Vendedor obj) {
+        if (obj.getNome() != null) {
+            vendedor.setNome(obj.getNome());
+        }
+        if (obj.getContato() != null) {
+            vendedor.setContato(obj.getContato());
+        }
+        if (obj.getEmail() != null) {
+            vendedor.setEmail(obj.getEmail());
+        }
+        if (obj.getSenha() != null) {
+            vendedor.setSenha(obj.getSenha());
+        }
     }
 }
