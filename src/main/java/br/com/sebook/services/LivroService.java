@@ -43,6 +43,5 @@ public class LivroService {
         entity.setEditora(livro.getEditora());
         entity.setNumeroDePaginas(livro.getNumeroDePaginas());
         entity.setPreco(livro.getPreco());
-        entity.setImgUrl(livro.getImgUrl());
     }
 }

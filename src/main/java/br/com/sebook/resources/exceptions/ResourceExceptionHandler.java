@@ -11,6 +11,13 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<StandardError> allExceptions(Exception e, HttpServletRequest request) {
+        String error = "Internal Server Error";
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardError> resourceNotFoundException(ResourceNotFoundException e, HttpServletRequest request) {
         String error = "Resource not found";

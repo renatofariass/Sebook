@@ -24,3 +24,7 @@ spring:
     pathsToMatch: /api/sebook/**
     swagger-ui:
       use-root-path: true
+
+  sebook:
+    imagens:
+      diretorio: classpath:/imagens-livros/

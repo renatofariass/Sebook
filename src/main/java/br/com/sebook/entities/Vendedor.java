@@ -21,21 +21,16 @@ public class Vendedor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    @Column(nullable = false)
     private String nome;
-    @NotBlank
-    @Column(unique = true, columnDefinition = "VARCHAR(11)", nullable = false)
+    @Size(min = 11, max = 11)
+    @Column(unique = true)
     private String contato;
-    @NotBlank
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String email;
-    @NotBlank
-    @Column(unique = true, columnDefinition = "VARCHAR(11)", nullable = false)
+    @Size(min = 11, max = 11)
+    @Column(unique = true)
     private String cpf;
-    @NotBlank
     @Size(min = 8, max = 50)
-    @Column(nullable = false)
     private String senha;
     @JsonIgnore
     @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL)

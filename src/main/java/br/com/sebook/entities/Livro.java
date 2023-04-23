@@ -21,25 +21,13 @@ public class Livro implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    @Column(nullable = false)
     private String titulo;
-    @NotBlank
-    @Column(nullable = false)
     private String editora;
-    @NotBlank
-    @Column(nullable = false)
     private String autor;
-    @Column(nullable = false)
     private Integer numeroDePaginas;
-    @Column(nullable = false)
     private Double preco;
-    @NotBlank
-    @Column(nullable = false)
     private String imgUrl;
-    @Column(nullable = false)
     private Long idDaCategoria;
-    @Column(nullable = false)
     private Long idDoVendedor;
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)

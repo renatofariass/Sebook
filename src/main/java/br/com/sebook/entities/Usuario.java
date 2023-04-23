@@ -19,16 +19,12 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
-    @Column(nullable = false)
     private String nome;
-    @NotBlank
-    @Column(unique = true, columnDefinition = "VARCHAR(11)")
+    @Size(min = 11, max = 11)
+    @Column(unique = true)
     private String contato;
-    @NotBlank
     @Column(unique = true)
     private String email;
-    @NotBlank
     @Size(min = 8, max = 50)
     private String senha;
 }
