@@ -24,15 +24,15 @@ public class CategoriaResource {
         return ResponseEntity.ok().body(lista);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Categoria> findById(@PathVariable Long id)  {
-        Categoria categoria = service.findById(id);
+    @GetMapping(value = "/{nome}")
+    public ResponseEntity<Categoria> findByNome(@PathVariable String nome)  {
+        Categoria categoria = service.findByNome(nome);
         return ResponseEntity.ok().body(categoria);
     }
 
-    @GetMapping(value = "/{id}/livros")
-    public ResponseEntity<List<Livro>> findLivros(@PathVariable Long id)  {
-        Categoria categoria = service.findById(id);
+    @GetMapping(value = "/{nome}/livros")
+    public ResponseEntity<List<Livro>> findLivros(@PathVariable String nome)  {
+        Categoria categoria = service.findByNome(nome);
         return ResponseEntity.ok().body(categoria.getLivros());
     }
 }

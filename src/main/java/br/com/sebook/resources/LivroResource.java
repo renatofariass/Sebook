@@ -7,6 +7,10 @@ import br.com.sebook.services.CategoriaService;
 import br.com.sebook.services.LivroService;
 import br.com.sebook.services.VendedorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,22 +29,23 @@ public class LivroResource {
     VendedorService vendedorService;
 
     @GetMapping
-    public ResponseEntity<List<Livro>> findAll() {
-        List<Livro> lista = service.findAll();
+    public ResponseEntity<Page<Livro>> findAll(@RequestParam(defaultValue = "0") Integer page,
+                                               @RequestParam(defaultValue = "10") Integer size) {
+        Page<Livro> lista = service.findAll(page, size);
         return ResponseEntity.ok().body(lista);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Livro> findById(@PathVariable Long id)  {
-        Livro livro = service.findById(id);
+    @GetMapping(value = "/{titulo}")
+    public ResponseEntity<Livro> findByTitulo(@PathVariable String id)  {
+        Livro livro = service.findByTitulo(id);
         return ResponseEntity.ok().body(livro);
     }
 
     @PostMapping
-    public ResponseEntity<Livro> insert(@RequestBody Livro livro) {
-        Categoria categoria = categoriaService.findById(livro.getIdDaCategoria());
+    public ResponseEntity<Livro> insert(@RequestBody Livro livro, @PathVariable String usernameVendedor) {
+        Categoria categoria = categoriaService.findByNome(livro.getNomeCategoria());
         livro.setCategoria(categoria);
-        Vendedor vendedor = vendedorService.findById(livro.getIdDoVendedor());
+        Vendedor vendedor = vendedorService.findByUsernameVendedor(usernameVendedor);
         livro.setVendedor(vendedor);
         livro = service.insert(livro);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId()).toUri();

@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "tb_usuario")
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -19,12 +18,24 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String nome;
+    @NotBlank
     @Size(min = 11, max = 11)
     @Column(unique = true)
     private String contato;
+    @NotBlank
     @Column(unique = true)
     private String email;
+    @NotBlank
     @Size(min = 8, max = 50)
     private String senha;
+
+    public Usuario(Long id, String nome, String contato, String email, String senha) {
+        this.id = id;
+        this.nome = nome;
+        this.contato = contato;
+        this.email = email;
+        this.senha = senha;
+    }
 }

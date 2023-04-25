@@ -23,9 +23,9 @@ public class VendedorResource {
         return ResponseEntity.ok().body(lista);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Vendedor> findById(@PathVariable Long id)  {
-        Vendedor vendedor = service.findById(id);
+    @GetMapping(value = "/{nome}")
+    public ResponseEntity<Vendedor> findByUsernameVendedor(@PathVariable String nome)  {
+        Vendedor vendedor = service.findByUsernameVendedor(nome);
         return ResponseEntity.ok().body(vendedor);
     }
 
@@ -42,15 +42,15 @@ public class VendedorResource {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Vendedor> update(@PathVariable Long id, @RequestBody Vendedor vendedor) {
-        vendedor = service.update(id, vendedor);
+    @PutMapping(value = "/{usernameVendedor}")
+    public ResponseEntity<Vendedor> update(@PathVariable String usernameVendedor, @RequestBody Vendedor vendedor) {
+        vendedor = service.update(usernameVendedor, vendedor);
         return ResponseEntity.ok().body(vendedor);
     }
 
-    @GetMapping("/{id}/livros")
-    public ResponseEntity<List<Livro>> findLivros(@PathVariable Long id) {
-        Vendedor vendedor = service.findById(id);
+    @GetMapping("/{usernameVendedor}/livros")
+    public ResponseEntity<List<Livro>> findLivros(@PathVariable String usernameVendedor) {
+        Vendedor vendedor = service.findByUsernameVendedor(usernameVendedor);
         return ResponseEntity.ok().body(vendedor.getLivros());
     }
 }

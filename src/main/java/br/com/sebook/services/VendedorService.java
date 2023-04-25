@@ -2,12 +2,11 @@ package br.com.sebook.services;
 
 import br.com.sebook.entities.Vendedor;
 import br.com.sebook.repositories.VendedorRepository;
+import br.com.sebook.services.exceptions.NameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.com.sebook.services.exceptions.ResourceNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VendedorService {
@@ -18,9 +17,12 @@ public class VendedorService {
         return vendedorRepository.findAll();
     }
 
-    public Vendedor findById(Long id) {
-        Optional<Vendedor> vendedor = vendedorRepository.findById(id);
-        return vendedor.orElseThrow(() -> new ResourceNotFoundException(id));
+    public Vendedor findByUsernameVendedor(String usernameVendedor) {
+        Vendedor vendedor = vendedorRepository.findByUsernameVendedor(usernameVendedor);
+        if(vendedor == null) {
+            throw new NameNotFoundException(usernameVendedor);
+        }
+        return vendedor;
     }
 
     public Vendedor insert(Vendedor vendedor) {
@@ -31,16 +33,18 @@ public class VendedorService {
         vendedorRepository.deleteById(id);
     }
 
-    public Vendedor update(Long id, Vendedor obj) {
-        Vendedor vendedor = vendedorRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+    public Vendedor update(String nome, Vendedor obj) {
+        Vendedor vendedor = vendedorRepository.findByUsernameVendedor(nome);
+        if (vendedor == null) {
+            throw new NameNotFoundException(nome);
+        }
         updateData(vendedor, obj);
         return vendedorRepository.save(vendedor);
     }
 
     private void updateData(Vendedor vendedor, Vendedor obj) {
-        if (obj.getNome() != null) {
-            vendedor.setNome(obj.getNome());
+        if (obj.getUsernameVendedor() != null) {
+            vendedor.setUsernameVendedor(obj.getUsernameVendedor());
         }
         if (obj.getContato() != null) {
             vendedor.setContato(obj.getContato());

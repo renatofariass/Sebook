@@ -1,7 +1,11 @@
 package br.com.sebook.config;
 
 import br.com.sebook.entities.Categoria;
+import br.com.sebook.entities.Livro;
+import br.com.sebook.entities.Vendedor;
 import br.com.sebook.repositories.CategoriaRepository;
+import br.com.sebook.repositories.LivroRepository;
+import br.com.sebook.repositories.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -15,38 +19,32 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private VendedorRepository vendedorRepository;
+
+    @Autowired
+    private LivroRepository livroRepository;
+
     @Override
     public void run(String... args) throws Exception {
-        categoriaRepository.saveAll(Arrays.asList(
-                new Categoria(null, "LGBTQ+"),
-                new Categoria(null, "Literatura e Ficção"),
-                new Categoria(null, "Medicina"),
-                new Categoria(null, "Policial, Suspense e Mistério"),
-                new Categoria(null, "Política, Filosofia e Ciências Sociais"),
-                new Categoria(null, "Religião e Espiritualidade"),
-                new Categoria(null, "Romance"),
-                new Categoria(null, "Saúde e Família"),
-                new Categoria(null, "Turismo e Guias de Viagem"),
-                new Categoria(null, "Inglês e Outras Línguas"),
-                new Categoria(null, "Jovens e Adolescentes"),
-                new Categoria(null, "Administração, Negócios e Economia"),
-                new Categoria(null, "Arte, Cinema e Fotografia"),
-                new Categoria(null, "Artesanato, Casa e Estilo de Vida"),
-                new Categoria(null, "Autoajuda"),
-                new Categoria(null, "Biografias e Histórias Reais"),
-                new Categoria(null, "Ciências"),
-                new Categoria(null, "Computação, Informática e Mídias Digitais"),
-                new Categoria(null, "Crônicas, Humor e Entretenimento"),
-                new Categoria(null, "Direito"),
-                new Categoria(null, "Educação, Referência e Didáticos"),
-                new Categoria(null, "Engenharia e Transporte"),
-                new Categoria(null, "Erótico"),
-                new Categoria(null, "Esportes e Lazer"),
-                new Categoria(null, "Fantasia, Horror e Ficção Científica"),
-                new Categoria(null, "Gastronomia e Culinária"),
-                new Categoria(null, "História"),
-                new Categoria(null, "HQs, Mangás e Graphic Novels"),
-                new Categoria(null, "Infantil")
-        ));
+        Categoria cat1 = new Categoria(null, "LGBTQ+");
+        Categoria cat2 = new Categoria(null, "Literatura e Ficção");
+        Categoria cat3 = new Categoria(null, "Medicina");
+        Categoria cat4 = new Categoria(null, "Policial, Suspense e Mistério");
+        categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4));
+
+
+       /* Vendedor vend1 = new Vendedor(null, "Renato", "81983675820", "renato@gmail.com", "12345678910", "12345678");
+        Vendedor vend2 = new Vendedor(null, "João", "81983675821", "joao@gmail.com", "12345678911", "12345678");
+        Vendedor vend3 = new Vendedor(null, "Madu", "81983675822", "madu@gmail.com", "12345678912", "12345678");
+        Vendedor vend4 = new Vendedor(null, "Thales", "81983675823", "thales@gmail.com", "12345678913", "12345678");
+        vendedorRepository.saveAll(Arrays.asList(vend1, vend2, vend3, vend4));
+
+        Livro liv1 = new Livro(null, "titulo1", "editora1", "autor1", 126, 126.0, cat1, vend1);
+        Livro liv2 = new Livro(null, "titulo2", "editora2", "autor2", 127, 127.0, cat2, vend2);
+        Livro liv3 = new Livro(null, "titulo3", "editora3", "autor3", 128, 128.0, cat3, vend3);
+        Livro liv4 = new Livro(null, "titulo4", "editora4", "autor4", 129, 129.0, cat4, vend4);
+        livroRepository.saveAll(Arrays.asList(liv1, liv2, liv3, liv4));
+        */
     }
 }
