@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_vendedor")
+@Table(name = "tb_vendedores")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -23,20 +23,20 @@ public class Vendedor implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "O username não pode conter espaços em branco")
-    @Size(min = 5, max=10)
-    @Column(unique = true)
+    @Size(min = 5, max=30)
+    @Column(unique = true, name = "username_vendedor")
     private String usernameVendedor;
     @NotBlank
-    @Pattern(regexp = "^\\+55\\d{11}$\n", message = "Forneça um número de telefone válido")
-    @Size(min = 11, max = 11)
+    @Pattern(regexp = "^\\+55\\d{11}$", message = "Forneça um número de telefone válido")
+    @Size(min = 14, max = 14)
     @Column(unique = true)
     private String contato;
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$\n", message = "Forneça um email válido")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Forneça um email válido")
     @NotBlank
     @Column(unique = true)
     private String email;
-    @Pattern(regexp = "^(?!(\\d)\\1{10})\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}$", message = "Forneça um CPF válido")
-    @Size(min = 11, max = 11)
+    @Pattern(regexp = "^(?!(\\d)\\1{10})\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$", message = "Forneça um CPF válido")
+    @Size(min = 14, max = 14)
     @Column(unique = true)
     private String cpf;
     @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$", message = "A senha deve conter pelo" +

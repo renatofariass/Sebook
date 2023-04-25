@@ -41,14 +41,14 @@ public class Livro implements Serializable {
     @JoinColumn(name = "vendedor_id", nullable = false)
     private Vendedor vendedor;
 
-    public Livro(Long id, String titulo, String editora, String autor, Integer numeroDePaginas, Double preco, Categoria categoria, Vendedor vendedor) {
+    public Livro(Long id, String titulo, String editora, String autor, Integer numeroDePaginas, Double preco, String imgUrl, String nomeCategoria) {
         this.id = id;
         this.titulo = titulo;
         this.editora = editora;
         this.autor = autor;
         this.numeroDePaginas = numeroDePaginas;
         this.preco = preco;
-        this.categoria = categoria;
-        this.vendedor = vendedor;
+        this.imgUrl = imgUrl;
+        this.nomeCategoria = nomeCategoria;
     }
 }
