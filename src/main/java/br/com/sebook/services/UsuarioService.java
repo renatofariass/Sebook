@@ -1,7 +1,9 @@
 package br.com.sebook.services;
 
+import br.com.sebook.dto.UsuarioDTO;
 import br.com.sebook.entities.Livro;
 import br.com.sebook.entities.Usuario;
+import br.com.sebook.mapper.Mapper;
 import br.com.sebook.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,32 +17,27 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+    public List<UsuarioDTO> findAll() {
+        return Mapper.parseListObjects(usuarioRepository.findAll(), UsuarioDTO.class);
     }
 
-    public Usuario findById(Long id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        return usuario.orElseThrow(() -> new ResourceNotFoundException(id));
+    public UsuarioDTO findById(Long id) {
+        var entity = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return Mapper.parseObject(entity, UsuarioDTO.class);
     }
 
-    public Usuario insert(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public UsuarioDTO insert(UsuarioDTO usuario) {
+        var entity = Mapper.parseObject(usuario, Usuario.class);
+        return Mapper.parseObject(usuarioRepository.save(entity), UsuarioDTO.class);
     }
 
     public void delete(Long id) {
         usuarioRepository.deleteById(id);
     }
 
-    public Usuario update(Long id, Usuario obj) {
-        Usuario usuario = usuarioRepository.findById(id)
+    public UsuarioDTO update(Long id, UsuarioDTO obj) {
+        var usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(id));
-        updateData(usuario, obj);
-        return usuarioRepository.save(usuario);
-
-    }
-
-    private void updateData(Usuario usuario, Usuario obj) {
         if (obj.getNome() != null) {
             usuario.setNome(obj.getNome());
         }
@@ -53,5 +50,6 @@ public class UsuarioService {
         if (obj.getSenha() != null) {
             usuario.setSenha(obj.getSenha());
         }
+        return Mapper.parseObject(usuarioRepository.save(usuario), UsuarioDTO.class);
     }
 }
