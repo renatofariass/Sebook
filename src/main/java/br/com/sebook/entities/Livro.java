@@ -36,10 +36,6 @@ public class Livro implements Serializable {
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "vendedor_id", nullable = false)
-    private Vendedor vendedor;
 
     public Livro(Long id, String titulo, String editora, String autor, Integer numeroDePaginas, Double preco, String imgUrl, String nomeCategoria) {
         this.id = id;

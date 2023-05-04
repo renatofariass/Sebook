@@ -1,10 +1,8 @@
 package br.com.sebook.resources;
 
-import br.com.sebook.dto.UsuarioDTO;
 import br.com.sebook.entities.Usuario;
 import br.com.sebook.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,31 +17,33 @@ public class UsuarioResource {
     UsuarioService service;
 
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<List<Usuario>> findAll() {
+        List<Usuario> lista = service.findAll();
+        return ResponseEntity.ok().body(lista);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id)  {
-        UsuarioDTO usuario = service.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(usuario);
+    public ResponseEntity<Usuario> findById(@PathVariable Long id)  {
+        Usuario usuario = service.findById(id);
+        return ResponseEntity.ok().body(usuario);
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioDTO> insert(@RequestBody UsuarioDTO usuario) {
+    public ResponseEntity<Usuario> insert(@RequestBody Usuario usuario) {
         usuario = service.insert(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
+        return ResponseEntity.created(uri).body(usuario);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody UsuarioDTO usuario) {
+    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
         usuario = service.update(id, usuario);
-        return ResponseEntity.status(HttpStatus.OK).body(usuario);
+        return ResponseEntity.ok().body(usuario);
     }
 }

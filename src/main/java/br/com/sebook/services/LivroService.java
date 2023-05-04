@@ -5,22 +5,17 @@ import br.com.sebook.repositories.LivroRepository;
 import br.com.sebook.services.exceptions.NameNotFoundException;
 import br.com.sebook.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LivroService {
     @Autowired
     private LivroRepository livroRepository;
 
-    public Page<Livro> findAll(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return livroRepository.findAll(pageable);
+    public List<Livro> findAll() {
+        return livroRepository.findAll();
     }
 
     public Livro findByTitulo(String titulo) {

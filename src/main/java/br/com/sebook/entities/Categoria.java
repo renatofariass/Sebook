@@ -23,6 +23,7 @@ public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String nome;
     @JsonIgnore
     @OneToMany(mappedBy = "categoria", targetEntity = Livro.class)
