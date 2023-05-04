@@ -25,10 +25,9 @@ public class LivroResource {
         return ResponseEntity.ok().body(service.findAll());
     }
 
-    @GetMapping(value = "/{titulo}")
-    public ResponseEntity<Livro> findByTitulo(@PathVariable String id)  {
-        Livro livro = service.findByTitulo(id);
-        return ResponseEntity.ok().body(livro);
+    @GetMapping(value = "/buscar/{titulo}")
+    public ResponseEntity<List<Livro>> findByTitulo(@PathVariable String nome)  {
+        return ResponseEntity.ok().body(service.findByTitulo(nome));
     }
 
     @PostMapping

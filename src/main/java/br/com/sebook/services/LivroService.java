@@ -18,12 +18,8 @@ public class LivroService {
         return livroRepository.findAll();
     }
 
-    public Livro findByTitulo(String titulo) {
-        Livro livro = livroRepository.findByTitulo(titulo);
-        if(livro == null) {
-            throw new NameNotFoundException(titulo);
-        }
-        return livro;
+    public List<Livro> findByTitulo(String titulo) {
+        return livroRepository.findByTituloContaining(titulo);
     }
 
     public Livro insert(Livro livro) {
