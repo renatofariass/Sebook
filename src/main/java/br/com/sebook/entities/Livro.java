@@ -21,31 +21,30 @@ public class Livro implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String titulo;
+    @NotBlank
     private String editora;
+    @NotBlank
     private String autor;
     private Integer numeroDePaginas;
     private Double preco;
     private String imgUrl;
-    private Long idDaCategoria;
-    private Long idDoVendedor;
+    @NotBlank
+    private String nomeCategoria;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "vendedor_id", nullable = false)
-    private Vendedor vendedor;
 
-
-    public Livro(Long id, String titulo, String autor, String editora, Integer numeroDePaginas, Double preco, String imgUrl, Long idDaCategoria, Long idDoVendedor) {
+    public Livro(Long id, String titulo, String editora, String autor, Integer numeroDePaginas, Double preco, String imgUrl, String nomeCategoria) {
         this.id = id;
         this.titulo = titulo;
-        this.autor = autor;
         this.editora = editora;
+        this.autor = autor;
         this.numeroDePaginas = numeroDePaginas;
         this.preco = preco;
-        this.idDaCategoria = idDaCategoria;
-        this.idDoVendedor = idDoVendedor;
+        this.imgUrl = imgUrl;
+        this.nomeCategoria = nomeCategoria;
     }
 }

@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sebook
+    username: postgres
+    password: postgres
+
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true

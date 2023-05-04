@@ -2,6 +2,7 @@ package br.com.sebook.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,14 @@ public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String nome;
     @JsonIgnore
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, targetEntity = Livro.class)
+    @OneToMany(mappedBy = "categoria", targetEntity = Livro.class)
     private List<Livro> livros = new ArrayList<>();
 
     public Categoria(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
-
 }

@@ -2,9 +2,9 @@ package br.com.sebook.services;
 
 import br.com.sebook.entities.Categoria;
 import br.com.sebook.repositories.CategoriaRepository;
+import br.com.sebook.services.exceptions.NameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.com.sebook.services.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,8 +18,9 @@ public class CategoriaService {
         return categoriaRepository.findAll();
     }
 
-    public Categoria findById(Long id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
-        return categoria.orElseThrow(() -> new ResourceNotFoundException(id));
+    public Categoria findByNome(String nome) {
+        Optional<Categoria> categoria = Optional.ofNullable(categoriaRepository.findByNome(nome));
+        return categoria.orElseThrow(() -> new NameNotFoundException(nome));
     }
+
 }

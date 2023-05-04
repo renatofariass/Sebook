@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: ${URL-DATABASE}
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+  show-sql: false
+  properties:
+    hibernate:
+      format_sql: false

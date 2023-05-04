@@ -2,12 +2,12 @@ package br.com.sebook.services;
 
 import br.com.sebook.entities.Livro;
 import br.com.sebook.repositories.LivroRepository;
+import br.com.sebook.services.exceptions.NameNotFoundException;
 import br.com.sebook.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LivroService {
@@ -18,9 +18,12 @@ public class LivroService {
         return livroRepository.findAll();
     }
 
-    public Livro findById(Long id) {
-        Optional<Livro> livro = livroRepository.findById(id);
-        return livro.orElseThrow(() -> new ResourceNotFoundException(id));
+    public Livro findByTitulo(String titulo) {
+        Livro livro = livroRepository.findByTitulo(titulo);
+        if(livro == null) {
+            throw new NameNotFoundException(titulo);
+        }
+        return livro;
     }
 
     public Livro insert(Livro livro) {
