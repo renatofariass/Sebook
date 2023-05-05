@@ -22,7 +22,7 @@ public class Usuario implements Serializable {
     @NotBlank
     private String nome;
     @NotBlank
-    @Pattern(regexp = "^\\+55\\d{11}$", message = "Forneça um número de telefone válido")
+    @Pattern(regexp = "\\d{13}$", message = "Forneça um número de telefone válido")
     @Size(min = 14, max = 14)
     @Column(unique = true)
     private String contato;
