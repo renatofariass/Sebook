@@ -24,12 +24,6 @@ public class CategoriaResource {
         return ResponseEntity.ok().body(lista);
     }
 
-    @GetMapping(value = "/{nome}")
-    public ResponseEntity<Categoria> findByNome(@PathVariable String nome)  {
-        Categoria categoria = service.findByNome(nome);
-        return ResponseEntity.ok().body(categoria);
-    }
-
     @GetMapping(value = "/{nome}/livros")
     public ResponseEntity<List<Livro>> findLivros(@PathVariable String nome)  {
         Categoria categoria = service.findByNome(nome);

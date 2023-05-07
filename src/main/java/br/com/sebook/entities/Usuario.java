@@ -22,16 +22,11 @@ public class Usuario implements Serializable {
     @NotBlank
     private String nome;
     @NotBlank
-    @Pattern(regexp = "\\d{13}$", message = "Forneça um número de telefone válido")
-    @Size(min = 14, max = 14)
     @Column(unique = true)
     private String contato;
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "Forneça um email válido")
     @NotBlank
     @Column(unique = true)
     private String email;
-    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[-+_!@#$%^&*.,?]).{8,}$", message = "A senha deve conter pelo" +
-            "menos 8 caracteres, sendo eles 1 letra maiúscula, 1 minúscula e 1 caractere special")
     @NotBlank
     @Size(min = 8, max = 100)
     private String senha;

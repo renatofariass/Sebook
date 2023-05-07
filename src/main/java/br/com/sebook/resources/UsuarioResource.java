@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,10 @@ public class UsuarioResource {
 
     @PostMapping
     public ResponseEntity<Usuario> insert(@RequestBody Usuario usuario) {
+        String mensagem = "Olá, o livro (nome_do_livro_aqui) ainda está disponível?";
+        String linkWhatsapp = "https://api.whatsapp.com/send?phone=" + usuario.getContato() +
+                "&text=" + URLEncoder.encode(mensagem, StandardCharsets.UTF_8);
+        usuario.setContato(linkWhatsapp);
         usuario = service.insert(usuario);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(usuario);
