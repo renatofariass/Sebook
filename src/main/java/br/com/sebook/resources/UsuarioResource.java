@@ -24,18 +24,18 @@ public class UsuarioResource {
         return ResponseEntity.ok().body(lista);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id)  {
-        Usuario usuario = service.findById(id);
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<Usuario> findById(@PathVariable String username)  {
+        Usuario usuario = service.findByUsuario(username);
         return ResponseEntity.ok().body(usuario);
     }
 
     @PostMapping
     public ResponseEntity<Usuario> insert(@RequestBody Usuario usuario) {
         String mensagem = "Olá, o livro (nome_do_livro_aqui) ainda está disponível?";
-        String linkWhatsapp = "https://api.whatsapp.com/send?phone=" + usuario.getContato() +
+        String linkWhatsapp = "https://api.whatsapp.com/send?phone=" + usuario.getTelefone() +
                 "&text=" + URLEncoder.encode(mensagem, StandardCharsets.UTF_8);
-        usuario.setContato(linkWhatsapp);
+        usuario.setWhatsapp(linkWhatsapp);
         usuario = service.insert(usuario);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(usuario);

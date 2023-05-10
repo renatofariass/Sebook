@@ -32,10 +32,15 @@ public class Livro implements Serializable {
     private String imgUrl;
     @NotBlank
     private String nomeCategoria;
+    @NotBlank
+    private String usernameUsuario;
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
     public Livro(Long id, String titulo, String editora, String autor, Integer numeroDePaginas, Double preco, String imgUrl, String nomeCategoria) {
         this.id = id;

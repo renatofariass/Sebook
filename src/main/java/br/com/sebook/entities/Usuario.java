@@ -1,5 +1,6 @@
 package br.com.sebook.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -7,6 +8,9 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -20,21 +24,28 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    private String nome;
-    @NotBlank
     @Column(unique = true)
-    private String contato;
+    private String username;
+    @NotBlank
+    private String nome;
+    @Column(unique = true)
+    private String telefone;
+    @NotBlank
+    private String whatsapp;
     @NotBlank
     @Column(unique = true)
     private String email;
     @NotBlank
     @Size(min = 8, max = 100)
     private String senha;
+    @JsonIgnore
+    @OneToMany(mappedBy = "usuario", targetEntity = Livro.class)
+    private List<Livro> livros = new ArrayList<>();
 
-    public Usuario(Long id, String nome, String contato, String email, String senha) {
+    public Usuario(Long id, String nome, String telefone, String email, String senha) {
         this.id = id;
         this.nome = nome;
-        this.contato = contato;
+        this.telefone = telefone;
         this.email = email;
         this.senha = senha;
     }

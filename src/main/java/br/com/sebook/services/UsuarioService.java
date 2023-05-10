@@ -2,10 +2,13 @@ package br.com.sebook.services;
 
 import br.com.sebook.entities.Usuario;
 import br.com.sebook.repositories.UsuarioRepository;
+import br.com.sebook.services.exceptions.NameNotFoundException;
 import br.com.sebook.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +21,12 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario findById(Long id) {
-        Optional<Usuario> usuario = usuarioRepository.findById(id);
-        return usuario.orElseThrow(() -> new ResourceNotFoundException(id));
+    public Usuario findByUsuario(String username) {
+        Usuario usuario = usuarioRepository.findByUsername(username);
+        if(usuario == null) {
+            throw new NameNotFoundException(username);
+        }
+        return usuario;
     }
 
     public Usuario insert(Usuario usuario) {
@@ -43,8 +49,12 @@ public class UsuarioService {
         if (obj.getNome() != null) {
             usuario.setNome(obj.getNome());
         }
-        if (obj.getContato() != null) {
-            usuario.setContato(obj.getContato());
+        if (obj.getTelefone() != null) {
+            usuario.setTelefone(obj.getTelefone());
+            String mensagem = "Olá, o livro (nome_do_livro_aqui) ainda está disponível?";
+            String linkWhatsapp = "https://api.whatsapp.com/send?phone=" + obj.getTelefone() +
+                    "&text=" + URLEncoder.encode(mensagem, StandardCharsets.UTF_8);
+            usuario.setWhatsapp(linkWhatsapp);
         }
         if (obj.getEmail() != null) {
             usuario.setEmail(obj.getEmail());

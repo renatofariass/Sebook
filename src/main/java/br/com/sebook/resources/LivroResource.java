@@ -2,8 +2,10 @@ package br.com.sebook.resources;
 
 import br.com.sebook.entities.Categoria;
 import br.com.sebook.entities.Livro;
+import br.com.sebook.entities.Usuario;
 import br.com.sebook.services.CategoriaService;
 import br.com.sebook.services.LivroService;
+import br.com.sebook.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +21,26 @@ public class LivroResource {
     LivroService service;
     @Autowired
     CategoriaService categoriaService;
+    @Autowired
+    UsuarioService usuarioService;
 
     @GetMapping
     public ResponseEntity<List<Livro>> findAll() {
         return ResponseEntity.ok().body(service.findAll());
     }
 
-    @GetMapping(value = "/buscar/{titulo}")
-    public ResponseEntity<List<Livro>> findByTitulo(@PathVariable String titulo)  {
+    @GetMapping(value = "/buscar")
+    public ResponseEntity<List<Livro>> findByTitulo(@RequestParam String titulo)  {
         return ResponseEntity.ok().body(service.findByTitulo(titulo));
     }
 
-    @PostMapping
-    public ResponseEntity<Livro> insert(@RequestBody Livro livro) {
+    @PostMapping(value = "{username}")
+    public ResponseEntity<Livro> insert(@PathVariable String username, @RequestBody Livro livro) {
         Categoria categoria = categoriaService.findByNome(livro.getNomeCategoria());
         livro.setCategoria(categoria);
+        livro.setUsernameUsuario(username);
+        Usuario usuario = usuarioService.findByUsuario(livro.getUsernameUsuario());
+        livro.setUsuario(usuario);
         livro = service.insert(livro);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId()).toUri();
         return ResponseEntity.created(uri).body(livro);
