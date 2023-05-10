@@ -2,6 +2,11 @@ package br.com.sebook.resources;
 
 import br.com.sebook.entities.Categoria;
 import br.com.sebook.entities.Livro;
+import br.com.sebook.entities.dto.CategoriaDto;
+import br.com.sebook.entities.dto.CategoriaMinDto;
+import br.com.sebook.entities.dto.LivroDto;
+import br.com.sebook.entities.dto.LivroMinDto;
+import br.com.sebook.mapper.Mapper;
 import br.com.sebook.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +24,16 @@ public class CategoriaResource {
     CategoriaService service;
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> findAll() {
+    public ResponseEntity<List<CategoriaMinDto>> findAll() {
         List<Categoria> lista = service.findAll();
-        return ResponseEntity.ok().body(lista);
+        List<CategoriaMinDto> listaDto = Mapper.parseListObjects(lista, CategoriaMinDto.class);
+        return ResponseEntity.ok().body(listaDto);
     }
 
     @GetMapping(value = "/{nome}/livros")
-    public ResponseEntity<List<Livro>> findLivros(@PathVariable String nome)  {
+    public ResponseEntity<List<LivroMinDto>> findLivros(@PathVariable String nome)  {
         Categoria categoria = service.findByNome(nome);
-        return ResponseEntity.ok().body(categoria.getLivros());
+        CategoriaDto categoriaDto = Mapper.parseObject(categoria, CategoriaDto.class);
+        return ResponseEntity.ok().body(categoriaDto.getLivros());
     }
 }

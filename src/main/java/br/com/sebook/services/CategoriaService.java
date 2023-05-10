@@ -2,7 +2,7 @@ package br.com.sebook.services;
 
 import br.com.sebook.entities.Categoria;
 import br.com.sebook.repositories.CategoriaRepository;
-import br.com.sebook.services.exceptions.NameNotFoundException;
+import br.com.sebook.services.exceptions.CategoriaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class CategoriaService {
 
     public Categoria findByNome(String nome) {
         Optional<Categoria> categoria = Optional.ofNullable(categoriaRepository.findByNome(nome));
-        return categoria.orElseThrow(() -> new NameNotFoundException(nome));
+        return categoria.orElseThrow(() -> new CategoriaNotFoundException(nome));
     }
 
 }

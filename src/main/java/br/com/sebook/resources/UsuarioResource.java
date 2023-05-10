@@ -1,6 +1,8 @@
 package br.com.sebook.resources;
 
 import br.com.sebook.entities.Usuario;
+import br.com.sebook.entities.dto.UsuarioMinDto;
+import br.com.sebook.mapper.Mapper;
 import br.com.sebook.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +21,10 @@ public class UsuarioResource {
     UsuarioService service;
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAll() {
+    public ResponseEntity<List<UsuarioMinDto>> findAll() {
         List<Usuario> lista = service.findAll();
-        return ResponseEntity.ok().body(lista);
+        List<UsuarioMinDto> usuarioMinDtoList = Mapper.parseListObjects(lista, UsuarioMinDto.class);
+        return ResponseEntity.ok().body(usuarioMinDtoList);
     }
 
     @GetMapping(value = "/{username}")

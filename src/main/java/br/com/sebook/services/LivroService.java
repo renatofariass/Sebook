@@ -2,7 +2,6 @@ package br.com.sebook.services;
 
 import br.com.sebook.entities.Livro;
 import br.com.sebook.repositories.LivroRepository;
-import br.com.sebook.services.exceptions.NameNotFoundException;
 import br.com.sebook.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

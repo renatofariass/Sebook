@@ -1,11 +1,12 @@
 package br.com.sebook.entities;
 
+import br.com.sebook.entities.dto.UsuarioMinDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.validator.constraints.LuhnCheck;
+import org.hibernate.validator.constraints.URL;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -32,6 +33,7 @@ public class Usuario implements Serializable {
     private String telefone;
     @NotBlank
     private String whatsapp;
+    @Email
     @NotBlank
     @Column(unique = true)
     private String email;
@@ -39,7 +41,7 @@ public class Usuario implements Serializable {
     @Size(min = 8, max = 100)
     private String senha;
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", targetEntity = Livro.class)
+    @OneToMany(mappedBy = "usuario")
     private List<Livro> livros = new ArrayList<>();
 
     public Usuario(Long id, String nome, String telefone, String email, String senha) {

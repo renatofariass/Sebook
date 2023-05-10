@@ -2,7 +2,7 @@ package br.com.sebook.services;
 
 import br.com.sebook.entities.Usuario;
 import br.com.sebook.repositories.UsuarioRepository;
-import br.com.sebook.services.exceptions.NameNotFoundException;
+import br.com.sebook.services.exceptions.UsuarioNotFoundException;
 import br.com.sebook.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -24,7 +23,7 @@ public class UsuarioService {
     public Usuario findByUsuario(String username) {
         Usuario usuario = usuarioRepository.findByUsername(username);
         if(usuario == null) {
-            throw new NameNotFoundException(username);
+            throw new UsuarioNotFoundException(username);
         }
         return usuario;
     }
