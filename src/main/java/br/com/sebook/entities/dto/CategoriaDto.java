@@ -1,6 +1,5 @@
 package br.com.sebook.entities.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.io.Serializable;
@@ -12,23 +11,10 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PUBLIC)
 public class CategoriaDto implements Serializable {
+    private Long id;
     private String nome;
     private List<LivroMinDto> livros;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public List<LivroMinDto> getLivros() {
-        return livros;
-    }
-
-    public void setLivros(List<LivroMinDto> livros) {
-        this.livros = livros;
-    }
 }

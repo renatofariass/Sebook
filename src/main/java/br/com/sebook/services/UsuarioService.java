@@ -2,8 +2,8 @@ package br.com.sebook.services;
 
 import br.com.sebook.entities.Usuario;
 import br.com.sebook.repositories.UsuarioRepository;
-import br.com.sebook.services.exceptions.UsuarioNotFoundException;
 import br.com.sebook.services.exceptions.ResourceNotFoundException;
+import br.com.sebook.services.exceptions.UsuarioNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

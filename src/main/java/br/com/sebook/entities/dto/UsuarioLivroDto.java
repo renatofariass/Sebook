@@ -10,10 +10,10 @@ import java.util.List;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
+@Getter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PUBLIC)
 public class UsuarioLivroDto implements Serializable {
+    private Long id;
     private String username;
     private String nome;
     private List<LivroMinDto> livros;

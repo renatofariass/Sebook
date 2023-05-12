@@ -1,6 +1,5 @@
 package br.com.sebook.entities.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.io.Serializable;
@@ -10,9 +9,8 @@ import java.io.Serializable;
  */
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
+@Getter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PUBLIC)
 public class LivroMinDto implements Serializable {
     private Long id;
     private String titulo;

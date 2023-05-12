@@ -1,10 +1,8 @@
 package br.com.sebook.resources;
 
 import br.com.sebook.entities.Categoria;
-import br.com.sebook.entities.Livro;
 import br.com.sebook.entities.dto.CategoriaDto;
 import br.com.sebook.entities.dto.CategoriaMinDto;
-import br.com.sebook.entities.dto.LivroDto;
 import br.com.sebook.entities.dto.LivroMinDto;
 import br.com.sebook.mapper.Mapper;
 import br.com.sebook.services.CategoriaService;
