@@ -1,14 +1,11 @@
-CREATE TABLE IF NOT EXISTS tb_livro (
-    id bigserial not null,
-    titulo varchar(255),
-    autor varchar(255),
-    editora varchar(255),
-    numero_de_paginas integer,
-    img_url varchar(255),
-    preco float(53),
-    nome_categoria varchar(255),
-    categoria_id bigint NOT NULL,
-    username_usuario varchar(30) not null,
-    usuario_id bigint not null,
-    PRIMARY KEY (id)
+CREATE TABLE IF NOT EXISTS tb_livros (
+  id SERIAL PRIMARY KEY,
+  titulo VARCHAR(255) NOT NULL,
+  editora VARCHAR(255) NOT NULL,
+  autor VARCHAR(255) NOT NULL,
+  preco NUMERIC(10, 2) NOT NULL,
+  img_url VARCHAR(255),
+  nome_categoria VARCHAR(255) NOT NULL,
+  categoria_id BIGINT NOT NULL,
+  sebo_id BIGINT NOT NULL
 );

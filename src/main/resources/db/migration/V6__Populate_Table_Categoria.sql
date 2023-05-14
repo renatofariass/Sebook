@@ -1,4 +1,4 @@
-INSERT INTO tb_categoria (nome)
+INSERT INTO tb_categorias (nome)
 VALUES ('Administração'),
        ('Negócios e Economia'),
        ('Arte, Cinema e Fotografia'),

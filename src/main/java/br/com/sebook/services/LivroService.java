@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LivroService {
@@ -15,6 +16,11 @@ public class LivroService {
 
     public List<Livro> findAll() {
         return livroRepository.findAll();
+    }
+
+    public Livro findById(Long id) {
+        Optional<Livro> livro = livroRepository.findById(id);
+        return livro.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public List<Livro> findByTitulo(String titulo) {
@@ -46,9 +52,6 @@ public class LivroService {
         }
         if (obj.getEditora() != null) {
             livro.setEditora(obj.getEditora());
-        }
-        if (obj.getNumeroDePaginas() != null) {
-            livro.setNumeroDePaginas(obj.getNumeroDePaginas());
         }
         if (obj.getPreco() != null) {
             livro.setPreco(obj.getPreco());

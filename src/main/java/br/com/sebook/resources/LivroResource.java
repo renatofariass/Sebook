@@ -2,14 +2,14 @@ package br.com.sebook.resources;
 
 import br.com.sebook.entities.Categoria;
 import br.com.sebook.entities.Livro;
-import br.com.sebook.entities.Usuario;
-import br.com.sebook.entities.dto.LivroDto;
-import br.com.sebook.entities.dto.LivroMinDto;
-import br.com.sebook.entities.dto.UsuarioLivroDto;
+import br.com.sebook.entities.Sebo;
+import br.com.sebook.entities.dto.livro.LivroDto;
+import br.com.sebook.entities.dto.livro.LivroMinDto;
+import br.com.sebook.entities.dto.sebo.SeboLivrosDto;
 import br.com.sebook.mapper.Mapper;
 import br.com.sebook.services.CategoriaService;
 import br.com.sebook.services.LivroService;
-import br.com.sebook.services.UsuarioService;
+import br.com.sebook.services.SeboService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,40 +22,46 @@ import java.util.List;
 @RequestMapping(value = "/livros")
 public class LivroResource {
     @Autowired
-    LivroService service;
+    LivroService livroService;
     @Autowired
     CategoriaService categoriaService;
     @Autowired
-    UsuarioService usuarioService;
+    SeboService seboService;
 
     @GetMapping
     public ResponseEntity<List<LivroMinDto>> findAll() {
-        List<Livro> livros = service.findAll();
+        List<Livro> livros = livroService.findAll();
         List<LivroMinDto> livroMinDtos = Mapper.parseListObjects(livros, LivroMinDto.class);
         return ResponseEntity.ok().body(livroMinDtos);
+    }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<LivroDto> findById(@PathVariable Long id) {
+        Livro livro = livroService.findById(id);
+        LivroDto livroDto = Mapper.parseObject(livro, LivroDto.class);
+        return ResponseEntity.ok().body(livroDto);
     }
 
     @GetMapping(value = "/buscar")
     public ResponseEntity<List<LivroMinDto>> findByTitulo(@RequestParam String titulo)  {
-        List<Livro> livros = service.findByTitulo(titulo);
+        List<Livro> livros = livroService.findByTitulo(titulo);
         List<LivroMinDto> livroMinDtos = Mapper.parseListObjects(livros, LivroMinDto.class);
         return ResponseEntity.ok().body(livroMinDtos);
     }
 
-    @GetMapping(value = "{username}")
-    public ResponseEntity<List<LivroMinDto>> livrosUsuario(@PathVariable String username) {
-        Usuario usuario = usuarioService.findByUsuario(username);
-        UsuarioLivroDto usuarioLivroDto = Mapper.parseObject(usuario, UsuarioLivroDto.class);
-        return ResponseEntity.ok().body(usuarioLivroDto.getLivros());
+    @GetMapping(value = "/sebo/{id}/livros")
+    public ResponseEntity<List<LivroMinDto>> livrosUsuario(@PathVariable Long id) {
+        Sebo sebo = seboService.findById(id);
+        SeboLivrosDto seboLivrosDto = Mapper.parseObject(sebo, SeboLivrosDto.class);
+        return ResponseEntity.ok().body(seboLivrosDto.getLivros());
     }
-    @PostMapping(value = "{username}")
-    public ResponseEntity<LivroDto> insert(@PathVariable String username, @RequestBody Livro livro) {
+    @PostMapping(value = "/sebo/{id}")
+    public ResponseEntity<LivroDto> insert(@RequestBody Livro livro, @PathVariable Long id) {
         Categoria categoria = categoriaService.findByNome(livro.getNomeCategoria());
         livro.setCategoria(categoria);
-        livro.setUsernameUsuario(username);
-        Usuario usuario = usuarioService.findByUsuario(livro.getUsernameUsuario());
-        livro.setUsuario(usuario);
-        livro = service.insert(livro);
+        Sebo sebo = seboService.findById(id);
+        livro.setSebo(sebo);
+        livro = livroService.insert(livro);
         LivroDto livroDto = Mapper.parseObject(livro, LivroDto.class);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId()).toUri();
         return ResponseEntity.created(uri).body(livroDto);
@@ -63,13 +69,13 @@ public class LivroResource {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        livroService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<LivroDto> update(@PathVariable Long id, @RequestBody Livro livro) {
-        livro = service.update(id, livro);
+        livro = livroService.update(id, livro);
         LivroDto livroDto = Mapper.parseObject(livro, LivroDto.class);
         return ResponseEntity.ok().body(livroDto);
     }

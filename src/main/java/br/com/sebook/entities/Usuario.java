@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "tb_usuario")
+@Table(name = "tb_usuarios")
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter(AccessLevel.PUBLIC)
+@Setter(AccessLevel.PUBLIC)
 public class Usuario implements Serializable {
     private static final Long serialVersionUID = 1L;
     @Id
@@ -25,13 +26,7 @@ public class Usuario implements Serializable {
     private Long id;
     @NotBlank
     @Column(unique = true)
-    private String username;
-    @NotBlank
     private String nome;
-    @Column(unique = true)
-    private String telefone;
-    @NotBlank
-    private String whatsapp;
     @Email
     @NotBlank
     @Column(unique = true)
@@ -39,14 +34,10 @@ public class Usuario implements Serializable {
     @NotBlank
     @Size(min = 8, max = 100)
     private String senha;
-    @JsonIgnore
-    @OneToMany(mappedBy = "usuario")
-    private List<Livro> livros = new ArrayList<>();
 
-    public Usuario(Long id, String nome, String telefone, String email, String senha) {
+    public Usuario(Long id, String nome, String email, String senha) {
         this.id = id;
         this.nome = nome;
-        this.telefone = telefone;
         this.email = email;
         this.senha = senha;
     }

@@ -1,9 +1,9 @@
 package br.com.sebook.resources;
 
 import br.com.sebook.entities.Categoria;
-import br.com.sebook.entities.dto.CategoriaDto;
-import br.com.sebook.entities.dto.CategoriaMinDto;
-import br.com.sebook.entities.dto.LivroMinDto;
+import br.com.sebook.entities.dto.categoria.CategoriaDto;
+import br.com.sebook.entities.dto.categoria.CategoriaMinDto;
+import br.com.sebook.entities.dto.livro.LivroMinDto;
 import br.com.sebook.mapper.Mapper;
 import br.com.sebook.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;

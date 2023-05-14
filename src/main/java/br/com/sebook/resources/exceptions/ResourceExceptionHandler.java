@@ -1,7 +1,6 @@
 package br.com.sebook.resources.exceptions;
 
 import br.com.sebook.services.exceptions.CategoriaNotFoundException;
-import br.com.sebook.services.exceptions.UsuarioNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,14 +30,6 @@ public class ResourceExceptionHandler {
     @ExceptionHandler(CategoriaNotFoundException.class)
     public ResponseEntity<StandardError> NameNotFound(CategoriaNotFoundException e, HttpServletRequest request) {
         String error = "Name not found";
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
-        return ResponseEntity.status(status).body(err);
-    }
-
-    @ExceptionHandler(UsuarioNotFoundException.class)
-    public ResponseEntity<StandardError> UsuarioNotFound(UsuarioNotFoundException e, HttpServletRequest request) {
-        String error = "Username not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);

@@ -1,4 +1,4 @@
-package br.com.sebook.entities.dto;
+package br.com.sebook.entities.dto.livro;
 
 import lombok.*;
 
@@ -15,7 +15,6 @@ public class LivroMinDto implements Serializable {
     private Long id;
     private String titulo;
     private String autor;
-    private Integer numeroDePaginas;
     private Double preco;
     private String imgUrl;
 }

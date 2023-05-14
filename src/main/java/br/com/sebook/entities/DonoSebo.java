@@ -2,34 +2,37 @@ package br.com.sebook.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigInteger;
 
 @Entity
-@Table(name = "tb_categorias")
+@Table(name = "tb_donos")
 @NoArgsConstructor
 @Getter(AccessLevel.PUBLIC)
 @Setter(AccessLevel.PUBLIC)
-public class Categoria implements Serializable {
+public class DonoSebo implements Serializable {
     private static final Long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
     private String nome;
+    private String cpf;
+    private String email;
+    private String senha;
     @JsonIgnore
-    @OneToMany(mappedBy = "categoria")
-    private List<Livro> livros = new ArrayList<>();
+    @OneToOne(mappedBy = "donoSebo", cascade = CascadeType.ALL)
+    private Sebo sebo;
 
-    public Categoria(Long id, String nome) {
+    public DonoSebo(Long id, String nome, String cpf, String email, String senha) {
         this.id = id;
         this.nome = nome;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
     }
 }

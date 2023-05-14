@@ -1,5 +1,7 @@
-package br.com.sebook.entities.dto;
+package br.com.sebook.entities.dto.livro;
 
+import br.com.sebook.entities.Sebo;
+import br.com.sebook.entities.dto.sebo.SeboMinDto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
@@ -14,20 +16,11 @@ import java.io.Serializable;
 @Setter(AccessLevel.PUBLIC)
 public class LivroDto implements Serializable {
     private Long id;
-    @NotBlank
     private String titulo;
-    @NotBlank
     private String editora;
-    @NotBlank
     private String autor;
-    @NotBlank
-    private Integer numeroDePaginas;
-    @NotBlank
     private Double preco;
-    @NotBlank
     private String imgUrl;
-    @NotBlank
     private String nomeCategoria;
-    @NotBlank
-    private UsuarioMinDto usuario;
+    private SeboMinDto sebo;
 }
