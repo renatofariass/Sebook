@@ -10,4 +10,7 @@ import java.util.List;
 public interface SeboRepository extends JpaRepository<Sebo, Long> {
     @Query("SELECT s FROM Sebo s WHERE lower(s.nome) LIKE lower(concat('%', :nome, '%'))")
     List<Sebo> findBySebo(String nome);
+
+    @Query("SELECT s FROM Sebo s WHERE lower(s.bairro) LIKE lower(concat('%', :bairro, '%'))")
+    List<Sebo> findBySeboBairro(String bairro);
 }

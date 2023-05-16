@@ -24,6 +24,10 @@ public class SeboService {
         return seboRepository.findBySebo(nome);
     }
 
+    public List<Sebo> findBySeboBairro(String bairro) {
+        return seboRepository.findBySeboBairro(bairro);
+    }
+
     public Sebo findById(Long id) {
         Optional<Sebo> sebo = seboRepository.findById(id);
         return sebo.orElseThrow(() -> new ResourceNotFoundException(id));

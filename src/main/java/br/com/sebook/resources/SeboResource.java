@@ -29,6 +29,13 @@ public class SeboResource {
         return ResponseEntity.ok().body(listaDto);
     }
 
+    @GetMapping
+    public ResponseEntity<List<SeboDto>> findAll(@RequestParam String bairro) {
+        List<Sebo> lista = service.findBySeboBairro(bairro);
+        List<SeboDto> listaDto = Mapper.parseListObjects(lista, SeboDto.class);
+        return ResponseEntity.ok().body(listaDto);
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<SeboLivrosDto> findLivros(@PathVariable Long id)  {
         Sebo sebo = service.findById(id);
