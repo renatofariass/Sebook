@@ -30,7 +30,7 @@ public class SeboResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<SeboDto>> findAll(@RequestParam String bairro) {
+    public ResponseEntity<List<SeboDto>> findByBairro(@RequestParam String bairro) {
         List<Sebo> lista = service.findBySeboBairro(bairro);
         List<SeboDto> listaDto = Mapper.parseListObjects(lista, SeboDto.class);
         return ResponseEntity.ok().body(listaDto);
