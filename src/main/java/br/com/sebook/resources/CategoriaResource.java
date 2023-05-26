@@ -18,7 +18,6 @@ public class CategoriaResource {
     @Autowired
     CategoriaService service;
 
-    @CrossOrigin(origins = "*")
     @GetMapping
     public ResponseEntity<List<CategoriaMinDto>> findAll() {
         List<Categoria> lista = service.findAll();
