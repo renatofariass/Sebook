@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 class SebookApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void main() {
+		SebookApplication.main(new String [] {});
 	}
 
 }
