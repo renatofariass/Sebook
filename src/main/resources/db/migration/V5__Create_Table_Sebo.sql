@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS tb_sebos (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(255) NOT NULL,
+  telefone VARCHAR(13) NOT NULL UNIQUE,
+  whatsapp VARCHAR(255),
+  endereco VARCHAR(255) NOT NULL,
+  bairro VARCHAR(255) NOT NULL,
+  cep VARCHAR(9) NOT NULL,
+  img_url VARCHAR(255),
+  dono_sebo_id BIGINT NOT NULL
+);
