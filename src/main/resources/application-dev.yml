@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/sebook
-    username: ${username}
-    password: ${password}
+    username: ${USERNAME}
+    password: ${PASSWORD}
 
   jpa:
     properties:
@@ -14,3 +14,8 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+
+api:
+  security:
+    token:
+      secret: ${SECRET-KEY}

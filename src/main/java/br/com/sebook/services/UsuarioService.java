@@ -30,20 +30,4 @@ public class UsuarioService {
     public void delete(Long id) {
         usuarioRepository.deleteById(id);
     }
-
-    public Usuario update(Long id, Usuario obj) {
-        Usuario usuario = usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
-        updateData(usuario, obj);
-        return usuarioRepository.save(usuario);
-    }
-
-    private void updateData(Usuario usuario, Usuario obj) {
-        if (obj.getEmail() != null) {
-            usuario.setEmail(obj.getEmail());
-        }
-        if (obj.getSenha() != null) {
-            usuario.setSenha(obj.getSenha());
-        }
-    }
 }

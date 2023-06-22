@@ -45,11 +45,4 @@ public class UsuarioResource {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<UsuarioDto> update(@PathVariable Long id, @RequestBody Usuario usuario) {
-        usuario = service.update(id, usuario);
-        UsuarioDto usuarioDto = Mapper.parseObject(usuario, UsuarioDto.class);
-        return ResponseEntity.ok().body(usuarioDto);
-    }
 }
