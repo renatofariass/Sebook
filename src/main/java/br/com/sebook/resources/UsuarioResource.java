@@ -1,11 +1,14 @@
 package br.com.sebook.resources;
 
 import br.com.sebook.entities.Usuario;
+import br.com.sebook.entities.dto.usuario.DadosUsuario;
 import br.com.sebook.entities.dto.usuario.UsuarioDto;
 import br.com.sebook.mapper.Mapper;
 import br.com.sebook.services.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -17,6 +20,17 @@ import java.util.List;
 public class UsuarioResource {
     @Autowired
     UsuarioService service;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @PostMapping("/registro")
+    public ResponseEntity<String> registrarUsuario(@RequestBody @Valid DadosUsuario dadosUsuario) {
+        var usuario = new Usuario(dadosUsuario.login(), dadosUsuario.senha());
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        service.insert(usuario);
+        return ResponseEntity.ok().body("Usuário registrado com sucesso!");
+    }
 
     @GetMapping
     public ResponseEntity<List<UsuarioDto>> findAll() {
@@ -30,14 +44,6 @@ public class UsuarioResource {
         Usuario usuario = service.findById(id);
         UsuarioDto usuarioDto = Mapper.parseObject(usuario, UsuarioDto.class);
         return ResponseEntity.ok().body(usuarioDto);
-    }
-
-    @PostMapping
-    public ResponseEntity<UsuarioDto> insert(@RequestBody Usuario usuario) {
-        usuario = service.insert(usuario);
-        UsuarioDto usuarioDto = Mapper.parseObject(usuario, UsuarioDto.class);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(usuarioDto.getId()).toUri();
-        return ResponseEntity.created(uri).body(usuarioDto);
     }
 
     @DeleteMapping(value = "/{id}")

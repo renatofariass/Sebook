@@ -31,8 +31,7 @@ public class Usuario implements Serializable, UserDetails {
     @NotBlank
     private String senha;
 
-    public Usuario(Long id, String login, String senha) {
-        this.id = id;
+    public Usuario(String login, String senha) {
         this.login = login;
         this.senha = senha;
     }

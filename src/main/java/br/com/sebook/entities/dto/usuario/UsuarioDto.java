@@ -13,6 +13,5 @@ import java.io.Serializable;
 @Setter(AccessLevel.PUBLIC)
 public class UsuarioDto implements Serializable {
     private Long id;
-    private String nome;
-    private String email;
+    private String login;
 }

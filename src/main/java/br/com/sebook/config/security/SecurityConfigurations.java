@@ -27,7 +27,7 @@ public class SecurityConfigurations {
         return httpSecurity.csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/login", "usuarios/registro").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -39,7 +39,7 @@ public class SecurityConfigurations {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
