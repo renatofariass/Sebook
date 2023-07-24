@@ -14,3 +14,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  flyway:
+    enabled: false
+
+api:
+  security:
+    token:
+      secret: 123

@@ -23,7 +23,7 @@ public class DonoSeboService {
 
     public DonoSebo findById(Long id) {
         Optional<DonoSebo> donoSebo = donoSeboRepository.findById(id);
-        return donoSebo.orElseThrow(() -> new ResourceNotFoundException(id));
+        return donoSebo.orElseThrow(() -> new ResourceNotFoundException("Dono de sebo não encontrado"));
     }
 
     public DonoSebo insert(DonoSebo donoSebo) {
@@ -36,7 +36,7 @@ public class DonoSeboService {
 
     public DonoSebo update(Long id, DonoSebo obj) {
         DonoSebo donoSebo = donoSeboRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Dono de sebo não encontrado."));
         updateData(donoSebo, obj);
         return donoSeboRepository.save(donoSebo);
 

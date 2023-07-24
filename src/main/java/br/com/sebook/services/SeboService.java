@@ -30,7 +30,7 @@ public class SeboService {
 
     public Sebo findById(Long id) {
         Optional<Sebo> sebo = seboRepository.findById(id);
-        return sebo.orElseThrow(() -> new ResourceNotFoundException(id));
+        return sebo.orElseThrow(() -> new ResourceNotFoundException("Sebo não encontrado."));
     }
 
     public Sebo insert(Sebo sebo) {
@@ -47,7 +47,7 @@ public class SeboService {
 
     public Sebo update(Long id, Sebo obj) {
         Sebo sebo = seboRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Sebo não encontrado."));
         updateData(sebo, obj);
         return seboRepository.save(sebo);
 

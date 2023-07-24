@@ -1,5 +1,6 @@
 package br.com.sebook.services;
 
+import br.com.sebook.entities.Categoria;
 import br.com.sebook.entities.Livro;
 import br.com.sebook.repositories.LivroRepository;
 import br.com.sebook.services.exceptions.ResourceNotFoundException;
@@ -15,112 +16,117 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 class LivroServiceTest {
     @InjectMocks
     private LivroService service;
     @Mock
     private LivroRepository repository;
 
+    private Livro livro;
+    private Livro livro2;
+    private Livro livroAtualizado;
+    private List<Livro> livros = new ArrayList<>();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        livroStart();
     }
 
     @Test
-    void buscarTodos_RetornaListaDeLivros() {
-        // Mockando o comportamento do repositório
-        List<Livro> listaEsperada = new ArrayList<>();
-        listaEsperada.add(new Livro(1L, "Livro 1", "Editora 1", "Autor 1", 10.0, "", "Categoria 1"));
-        listaEsperada.add(new Livro(2L, "Livro 2", "Editora 2", "Autor 2", 20.0, "", "Categoria 2"));
-        Mockito.when(repository.findAll()).thenReturn(listaEsperada);
+    void buscarTodosRetornaListaDeLivros() {
+        livros.add(livro);
+        livros.add(livro2);
+        when(repository.findAll()).thenReturn(livros);
 
-        // Chamando o método do serviço
-        List<Livro> listaAtual = service.findAll();
+        List<Livro> listaEsperada = service.findAll();
 
-        // Verificando o resultado
-        Assertions.assertEquals(listaEsperada, listaAtual);
+        assertNotNull(listaEsperada);
+        assertEquals(livros, listaEsperada);
+        assertEquals(2, listaEsperada.size());
+        assertEquals(Livro.class, listaEsperada.get(0).getClass());
+        assertEquals(livro.getId(), listaEsperada.get(0).getId());
+        assertEquals(livro.getTitulo(), listaEsperada.get(0).getTitulo());
+        assertEquals(livro.getAutor(), listaEsperada.get(0).getAutor());
+        assertEquals(livro.getEditora(), listaEsperada.get(0).getEditora());
+        assertEquals(livro.getNomeCategoria(), listaEsperada.get(0).getNomeCategoria());
+        assertEquals(livro.getImgUrl(), listaEsperada.get(0).getImgUrl());
+        assertEquals(livro.getPreco(), listaEsperada.get(0).getPreco());
     }
 
     @Test
-    void buscarPorId_IdExistente_RetornaLivro() {
-        // Mockando o comportamento do repositório
-        Livro livroEsperado = new Livro(1L, "Livro 1", "Editora 1", "Autor 1", 10.0, "", "Categoria 1");
-        Mockito.when(repository.findById(1L)).thenReturn(Optional.of(livroEsperado));
+    void buscarPorIdIdExistenteRetornaLivro() {
+        when(repository.findById(1L)).thenReturn(Optional.of(livro));
 
-        // Chamando o método do serviço
-        Livro livroAtual = service.findById(1L);
+        Livro livroEsperado = service.findById(1L);
 
-        // Verificando o resultado
-        Assertions.assertEquals(livroEsperado, livroAtual);
+        assertEquals(livro, livroEsperado);
     }
 
     @Test
-    void buscarPorId_IdNaoExistente_LancaResourceNotFoundException() {
-        // Mockando o comportamento do repositório
-        Mockito.when(repository.findById(1L)).thenReturn(Optional.empty());
+    void buscarPorIdIdNaoExistenteLancaResourceNotFoundException() {
+        when(repository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método do serviço e verificando a exceção
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> service.findById(1L));
+        assertThrows(ResourceNotFoundException.class, () -> service.findById(1L));
     }
 
     @Test
-    void buscarPorTitulo_TituloExistente_RetornaListaDeLivros() {
-        // Mockando o comportamento do repositório
-        List<Livro> listaEsperada = new ArrayList<>();
-        listaEsperada.add(new Livro(1L, "Livro 1", "Editora 1", "Autor 1", 10.0, "", "Categoria 1"));
-        listaEsperada.add(new Livro(2L, "Livro 2", "Editora 2", "Autor 2", 20.0, "", "Categoria 2"));
-        Mockito.when(repository.findByTituloContaining("Livro")).thenReturn(listaEsperada);
+    void buscarPorTituloExistenteRetornaListaDeLivros() {
+        when(repository.findByTituloContaining("Livro")).thenReturn(livros);
 
-        // Chamando o método do serviço
-        List<Livro> listaAtual = service.findByTitulo("Livro");
+        List<Livro> listaEsperada = service.findByTitulo("Livro");
 
-        // Verificando o resultado
-        Assertions.assertEquals(listaEsperada, listaAtual);
+        assertEquals(livros, listaEsperada);
     }
 
     @Test
-    void inserir_RetornaLivroInserido() {
-        // Mockando o comportamento do repositório
-        Livro livroInserido = new Livro(1L, "Livro 1", "Editora 1", "Autor 1", 10.0, "", "Categoria 1");
-        Mockito.when(repository.save(Mockito.any(Livro.class))).thenReturn(livroInserido);
+    void inserirRetornaLivroInserido() {
+        when(repository.save(any(Livro.class))).thenReturn(livro);
 
-        // Chamando o método do serviço
-        Livro livroAtual = service.insert(livroInserido);
+        Livro livroEsperado = service.insert(livro);
 
-        // Verificando o resultado
-        Assertions.assertEquals(livroInserido, livroAtual);
+        assertNotNull(livroEsperado);
+        assertEquals(livro, livroEsperado);
+        assertEquals(livro.getClass(), livroEsperado.getClass());
+        assertEquals(livro.getId(), livroEsperado.getId());
+        assertEquals(livro.getTitulo(), livroEsperado.getTitulo());
+        assertEquals(livro.getAutor(), livroEsperado.getAutor());
+        assertEquals(livro.getEditora(), livroEsperado.getEditora());
+        assertEquals(livro.getNomeCategoria(), livroEsperado.getNomeCategoria());
+        assertEquals(livro.getImgUrl(), livroEsperado.getImgUrl());
+        assertEquals(livro.getPreco(), livroEsperado.getPreco());
     }
 
     @Test
-    void deletar_IdExistente_DeletaLivro() {
-        // Chamando o método do serviço
+    void deletarIdExistenteDeletaLivro() {
         service.delete(1L);
 
-        // Verificando se o método do repositório foi chamado corretamente
-        Mockito.verify(repository, Mockito.times(1)).deleteById(1L);
+        verify(repository, times(1)).deleteById(1L);
     }
 
     @Test
-    void atualizar_IdExistente_RetornaLivroAtualizado() {
-        // Mockando o comportamento do repositório
-        Livro livroExistente = new Livro(1L, "Livro 1", "Editora 1", "Autor 1", 10.0, "", "Categoria 1");
-        Livro livroAtualizado = new Livro(1L, "Livro Atualizado", "Editora Atualizada", "Autor Atualizado", 20.0, "", "Categoria Atualizada");
-        Mockito.when(repository.findById(1L)).thenReturn(Optional.of(livroExistente));
-        Mockito.when(repository.save(Mockito.any(Livro.class))).thenReturn(livroAtualizado);
+    void atualizarIdExistenteRetornaLivroAtualizado() {
+        when(repository.findById(1L)).thenReturn(Optional.of(livro));
+        when(repository.save(any(Livro.class))).thenReturn(livroAtualizado);
 
-        // Chamando o método do serviço
-        Livro livroAtual = service.update(1L, livroAtualizado);
+        Livro livroEsperado = service.update(1L, livroAtualizado);
 
-        // Verificando o resultado
-        Assertions.assertEquals(livroAtualizado, livroAtual);
+        assertEquals(livroAtualizado, livroEsperado);
     }
 
     @Test
-    void atualizar_IdNaoExistente_LancaResourceNotFoundException() {
-        // Mockando o comportamento do repositório
-        Mockito.when(repository.findById(1L)).thenReturn(Optional.empty());
+    void atualizarIdNaoExistenteLancaResourceNotFoundException() {
+        when(repository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método do serviço e verificando a exceção
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> service.update(1L, new Livro()));
+        assertThrows(ResourceNotFoundException.class, () -> service.update(1L, new Livro()));
+    }
+
+    private void livroStart() {
+        livro = new Livro(1L, "Livro 1", "Editora 1", "Autor 1", 10.0, "", "Categoria 1");
+        livro2 = new Livro(2L, "Livro 2", "Editora 2", "Autor 2", 20.0, "", "Categoria 2");
+        livroAtualizado = new Livro(1L, "Livro Atualizado", "Editora Atualizada", "Autor Atualizado", 20.0, "", "Categoria Atualizada");
     }
 }

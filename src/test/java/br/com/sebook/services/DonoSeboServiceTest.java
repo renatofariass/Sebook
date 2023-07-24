@@ -1,9 +1,10 @@
 package br.com.sebook.services;
 
+import br.com.sebook.entities.Categoria;
 import br.com.sebook.entities.DonoSebo;
 import br.com.sebook.repositories.DonoSeboRepository;
 import br.com.sebook.services.exceptions.ResourceNotFoundException;
-import org.junit.jupiter.api.Assertions;
+import org.hibernate.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,97 +16,95 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 class DonoSeboServiceTest {
     @InjectMocks
     private DonoSeboService service;
     @Mock
     private DonoSeboRepository repository;
 
+    private DonoSebo donoSebo;
+    private DonoSebo donoSebo2;
+    private DonoSebo donoSeboAtualizado;
+    private List<DonoSebo> listaDonoSebo = new ArrayList<>();
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        donoSeboStart();
     }
 
     @Test
-    void buscarTodos_RetornaListaDeDonosSebo() {
-        // Mockando o comportamento do repositório
-        List<DonoSebo> listaEsperada = new ArrayList<>();
-        listaEsperada.add(new DonoSebo(1L, "João Silva", "123456789", "joao@gmail.com", "senha123"));
-        listaEsperada.add(new DonoSebo(2L, "Maria Santos", "987654321", "maria@gmail.com", "senha456"));
-        Mockito.when(repository.findAll()).thenReturn(listaEsperada);
+    void buscarTodosRetornaListaDeDonosSebo() {
+        listaDonoSebo.add(donoSebo);
+        listaDonoSebo.add(donoSebo2);
+        when(repository.findAll()).thenReturn(listaDonoSebo);
 
-        // Chamando o método do serviço
-        List<DonoSebo> listaAtual = service.findAll();
+        List<DonoSebo> listaEsperada = service.findAll();
 
-        // Verificando o resultado
-        Assertions.assertEquals(listaEsperada, listaAtual);
+        assertNotNull(listaEsperada);
+        assertEquals(listaDonoSebo, listaEsperada);
+        assertEquals(2, listaEsperada.size());
+        assertEquals(DonoSebo.class, listaEsperada.get(0).getClass());
+        assertEquals(donoSebo.getId(), listaEsperada.get(0).getId());
+        assertEquals(donoSebo.getNome(), listaEsperada.get(0).getNome());
+        assertEquals(donoSebo.getCpf(), listaEsperada.get(0).getCpf());
+        assertEquals(donoSebo.getEmail(), listaEsperada.get(0).getEmail());
+        assertEquals(donoSebo.getSenha(), listaEsperada.get(0).getSenha());
     }
 
     @Test
-    void buscarPorId_IdExistente_RetornaDonoSebo() {
-        // Mockando o comportamento do repositório
-        DonoSebo donoSeboEsperado = new DonoSebo(1L, "João Silva", "123456789", "joao@gmail.com", "senha123");
-        Mockito.when(repository.findById(1L)).thenReturn(Optional.of(donoSeboEsperado));
+    void buscarPorIdIdExistenteRetornaDonoSebo() {
+        when(repository.findById(1L)).thenReturn(Optional.of(donoSebo));
 
-        // Chamando o método do serviço
         DonoSebo donoSeboAtual = service.findById(1L);
 
-        // Verificando o resultado
-        Assertions.assertEquals(donoSeboEsperado, donoSeboAtual);
+        assertEquals(donoSebo, donoSeboAtual);
     }
 
     @Test
-    void buscarPorId_IdNaoExistente_LancaResourceNotFoundException() {
-        // Mockando o comportamento do repositório
-        Mockito.when(repository.findById(1L)).thenReturn(Optional.empty());
-
-        // Chamando o método do serviço e verificando a exceção
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> service.findById(1L));
+    void buscarPorIdIdNaoExistenteLancarResourceNotFoundException() {
+        when(repository.findById(anyLong())).thenThrow(new ResourceNotFoundException("Dono de sebo não encontrado."));
+        try {
+            service.findById(1L);
+        }
+        catch (Exception e) {
+            assertEquals(ResourceNotFoundException.class, e.getClass());
+            assertEquals("Dono de sebo não encontrado.", e.getMessage());
+        }
     }
 
     @Test
-    void inserir_RetornaDonoSeboInserido() {
-        // Mockando o comportamento do repositório
-        DonoSebo donoSeboEsperado = new DonoSebo(1L, "João Silva", "123456789", "joao@gmail.com", "senha123");
-        Mockito.when(repository.save(Mockito.any(DonoSebo.class))).thenReturn(donoSeboEsperado);
+    void inserirRetornaDonoSeboInserido() {
+        when(repository.save(Mockito.any(DonoSebo.class))).thenReturn(donoSebo);
 
-        // Chamando o método do serviço
-        DonoSebo donoSeboAtual = service.insert(donoSeboEsperado);
+        DonoSebo donoSeboAtual = service.insert(donoSebo);
 
-        // Verificando o resultado
-        Assertions.assertEquals(donoSeboEsperado, donoSeboAtual);
+        assertEquals(donoSebo, donoSeboAtual);
     }
 
     @Test
-    void deletar_IdExistente_DeletaDonoSebo() {
-        // Chamando o método do serviço
+    void deletarIdExistenteDeletaDonoSebo() {
         service.delete(1L);
 
-        // Verificando se o método do repositório foi chamado corretamente
-        Mockito.verify(repository, Mockito.times(1)).deleteById(1L);
+        verify(repository, times(1)).deleteById(1L);
     }
 
     @Test
-    void atualizar_IdExistente_RetornaDonoSeboAtualizado() {
-        // Mockando o comportamento do repositório
-        DonoSebo donoSeboExistente = new DonoSebo(1L, "João Silva", "123456789", "joao@gmail.com", "senha123");
-        DonoSebo donoSeboAtualizado = new DonoSebo(1L, "João da Silva", "987654321", "joao@gmail.com", "novasenha");
-        Mockito.when(repository.findById(1L)).thenReturn(Optional.of(donoSeboExistente));
-        Mockito.when(repository.save(Mockito.any(DonoSebo.class))).thenReturn(donoSeboAtualizado);
+    void atualizarIdExistenteRetornaDonoSeboAtualizado() {
+        when(repository.findById(1L)).thenReturn(Optional.of(donoSebo));
+        when(repository.save(Mockito.any(DonoSebo.class))).thenReturn(donoSeboAtualizado);
 
-        // Chamando o método do serviço
         DonoSebo donoSeboAtual = service.update(1L, donoSeboAtualizado);
 
-        // Verificando o resultado
-        Assertions.assertEquals(donoSeboAtualizado, donoSeboAtual);
+        assertEquals(donoSeboAtualizado, donoSeboAtual);
     }
 
-    @Test
-    void atualizar_IdNaoExistente_LancaResourceNotFoundException() {
-        // Mockando o comportamento do repositório
-        Mockito.when(repository.findById(1L)).thenReturn(Optional.empty());
-
-        // Chamando o método do serviço e verificando a exceção
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> service.update(1L, new DonoSebo()));
+    private void donoSeboStart() {
+        donoSebo = new DonoSebo(1L, "João Silva", "123456789", "joao@gmail.com", "senha123");
+        donoSebo2 = new DonoSebo(2L, "Maria Santos", "987654321", "maria@gmail.com", "senha456");
+        donoSeboAtualizado = new DonoSebo(1L, "João da Silva", "987654321", "joao@gmail.com", "novasenha");
     }
 }

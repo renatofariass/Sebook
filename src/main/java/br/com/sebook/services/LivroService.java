@@ -20,7 +20,7 @@ public class LivroService {
 
     public Livro findById(Long id) {
         Optional<Livro> livro = livroRepository.findById(id);
-        return livro.orElseThrow(() -> new ResourceNotFoundException(id));
+        return livro.orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado."));
     }
 
     public List<Livro> findByTitulo(String titulo) {
@@ -38,7 +38,7 @@ public class LivroService {
 
     public Livro update(Long id, Livro obj) {
         Livro livro = livroRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
+                .orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado."));
         updateData(livro, obj);
         return livroRepository.save(livro);
     }

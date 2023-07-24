@@ -20,7 +20,7 @@ public class UsuarioService {
 
     public Usuario findById(Long id) {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
-        return usuario.orElseThrow(() -> new ResourceNotFoundException(id));
+        return usuario.orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado."));
     }
 
     public Usuario insert(Usuario usuario) {
