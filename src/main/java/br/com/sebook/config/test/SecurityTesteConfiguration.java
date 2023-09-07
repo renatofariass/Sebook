@@ -1,9 +1,7 @@
-package br.com.sebook.config.security;
+package br.com.sebook.config.test;
 
-import org.h2.server.web.JakartaWebServlet;
-import org.h2.server.web.WebServlet;
+import br.com.sebook.config.security.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,9 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 @Configuration
-@Profile({"dev", "prod"})
+@Profile("test")
 @EnableWebSecurity
-public class SecurityConfigurations {
+public class SecurityTesteConfiguration {
     @Autowired
     private SecurityFilter securityFilter;
 
@@ -33,11 +31,14 @@ public class SecurityConfigurations {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-                return httpSecurity.csrf().disable().sessionManagement()
+        return httpSecurity.csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/login", "usuarios/registro").permitAll()
+                .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                .requestMatchers(toH2Console()).permitAll()
                 .anyRequest().authenticated()
+                .and().headers().frameOptions().sameOrigin()
                 .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
